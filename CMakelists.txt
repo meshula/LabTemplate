@@ -7,7 +7,17 @@ project(Lab)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-# if macos, set src variable to main.mm, otherwise main.cpp
+# create an app options variable, on apple it'll have MACOSX_BUNDLE
+if (APPLE)
+    # Add the MACOSX_BUNDLE option to make this a macOS GUI application
+    # If one doesn't do this, when running within Xcode, the application will run in the terminal,
+    # and a second time under Xcode, which is very confusing.
+    set(APP_OPTIONS MACOSX_BUNDLE)
+else()
+    set(APP_OPTIONS "")
+endif()
+
+# LabMetal is a macOS only application, so we'll only build it on macOS
 if(APPLE)
     set(src src/main.mm)
 
@@ -17,7 +27,7 @@ if(APPLE)
         src/RGFW-Metal.c)
 
     # Add the executable, using src.
-    add_executable(LabMetal ${src})
+    add_executable(LabMetal ${APP_OPTIONS} ${src})
 
     # add preprocessor definition, HAVE_NO_USD
     target_compile_definitions(LabMetal PRIVATE 
@@ -47,15 +57,7 @@ list(APPEND src
     src/imgui/backends/imgui_impl_opengl2.cpp
 )
 
-
-if(APPLE)
-# Add the MACOSX_BUNDLE option to make this a macOS GUI application
-# If one doesn't do this, when running within Xcode, the application will run in the terminal,
-# and a second time under Xcode, which is very confusing.
-add_executable(LabGL MACOSX_BUNDLE ${src})
-else()
-add_executable(LabGL ${src})
-endif()
+add_executable(LabGL ${APP_OPTIONS} ${src})
 
 # add preprocessor definition, HAVE_NO_USD
 target_compile_definitions(LabGL PRIVATE 

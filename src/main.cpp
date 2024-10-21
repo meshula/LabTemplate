@@ -56,6 +56,17 @@ int main_basic(void) {
         RGFW_window_eventWait(win, RGFW_NEXT);
         
         while (RGFW_window_checkEvent(win) != NULL) {
+            if (win->event.type == 0)
+                continue;
+
+            if (win->event.type == 1)
+                printf("key pressed\n");
+
+            if (win->event.type == RGFW_mouseButtonPressed)
+                printf("mouse button pressed\n");
+            if (win->event.type == RGFW_mouseButtonReleased)
+                printf("mouse button released\n");
+
             if (win->event.type == RGFW_windowMoved) {
                 printf("window moved\n");
             }
@@ -222,9 +233,11 @@ int main_imgui() {
 
     lab::ApplicationEngine& app = *lab::ApplicationEngine::app();
 
+    RGFW_monitor monitor = RGFW_window_getMonitor(win);
+    io.DisplaySize = ImVec2(monitor.scaleX, monitor.scaleY);
+
     while (RGFW_window_shouldClose(win) == RGFW_FALSE) {
         RGFW_window_checkEvents(win, RGFW_NO_WAIT);
-        io.DisplaySize = ImVec2(win->r.w, win->r.h);
 
         imgui_newFrame();
 
@@ -293,6 +306,6 @@ void imgui_shutdown(void) {
 
 int main(void) {
     printf("LabTemplate RGFW OpenGL2 demo\n");
-    //return main_basic();
-    return main_imgui();
+    return main_basic();
+    //return main_imgui();
 }
