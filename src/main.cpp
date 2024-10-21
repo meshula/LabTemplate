@@ -246,6 +246,9 @@ int main_imgui() {
 }
 
 void imgui_newFrame() {
+    ImGuiIO& io = ImGui::GetIO();
+    io.DisplayFramebufferScale = ImVec2(2,2); // this should be a platform appropriate scaling factor
+
     ImGui::NewFrame();
     ImGui_ImplRgfw_NewFrame();
     ImGui_ImplOpenGL2_NewFrame();
