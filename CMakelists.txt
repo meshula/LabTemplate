@@ -1,0 +1,63 @@
+cmake_minimum_required(VERSION 3.10)
+
+# Set the project name
+project(Lab)
+
+# Specify the C++ standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED True)
+
+# if macos, set src variable to main.mm, otherwise main.cpp
+if(APPLE)
+    set(src src/main.mm)
+
+    # append src/Modes.cpp and src/RGFW_ODR to src
+    list(APPEND src 
+        src/Modes.cpp 
+        src/RGFW_ODR.c)
+
+    # Add the executable, using src.
+    add_executable(LabMetal ${src})
+
+    # add preprocessor definition, HAVE_NO_USD
+    target_compile_definitions(LabMetal PRIVATE 
+        HAVE_NO_USD)
+
+    # add src as an include directory
+    target_include_directories(LabMetal PUBLIC src)
+
+    target_link_libraries(LabMetal "-framework Metal" "-framework Foundation" "-framework AppKit" "-framework Cocoa" "-framework CoreVideo" "-framework QuartzCore")
+
+    # add an installation step
+    install(TARGETS LabMetal DESTINATION bin)
+endif()
+
+set(src src/main.c)
+
+# append src/Modes.cpp and src/RGFW_ODR to src
+list(APPEND src 
+    src/Modes.cpp)
+
+# Add the executable, using src.
+add_executable(LabGL ${src})
+
+# add preprocessor definition, HAVE_NO_USD
+target_compile_definitions(LabGL PRIVATE 
+    HAVE_NO_USD)
+
+# add src as an include directory
+target_include_directories(LabGL PUBLIC src)
+
+if(APPLE)
+    # Metal
+    target_link_libraries(LabGL "-framework OpenGL" "-framework Metal" "-framework Foundation" "-framework AppKit" "-framework Cocoa" "-framework CoreVideo" "-framework QuartzCore")
+elseif(UNIX)
+    # OpenGL, todo vulkan.
+    target_link_libraries(LabGL "-lXrandr" "-lX11" "-lm" "-lGL" "-ldl" "-lpthread")
+elseif(WIN32)
+    # OpenGL, todo dx11
+    target_link_libraries(LabGL "-lopengl32" "-lgdi32" "-lwinmm")
+endif()
+
+# add an installation step
+install(TARGETS LabGL DESTINATION bin)
