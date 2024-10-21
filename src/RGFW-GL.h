@@ -1,7 +1,7 @@
 
 #define RGFW_EXPORT
-#define RGFW_ALLOC_DROPFILES
-#define RGFW_PRINT_ERRORS
+//#define RGFW_ALLOC_DROPFILES
+//#define RGFW_PRINT_ERRORS
 #define RGFW_OPENGL
 
 #include "RGFW.h"

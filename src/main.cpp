@@ -189,7 +189,7 @@ void imgui_render(void);
 void imgui_shutdown(void);
 
 int main_imgui() {
-    RGFW_window* win = RGFW_createWindow("imgui", RGFW_RECT(0, 0, 700, 600), RGFW_CENTER);
+    RGFW_window* win = RGFW_createWindow("Lab Template", RGFW_RECT(0, 0, 700, 600), RGFW_CENTER);
     RGFW_window_makeCurrent(win);
 
     IMGUI_CHECKVERSION();
@@ -206,7 +206,7 @@ int main_imgui() {
     ImGui_ImplOpenGL2_Init();
 
     io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
-    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
 
     // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
     ImGuiStyle& style = ImGui::GetStyle();
@@ -235,7 +235,11 @@ int main_imgui() {
         
         ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
-            ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+            // display mouse position
+            ImGui::Text("Mouse Position: (%f, %f)", io.MousePos.x, io.MousePos.y);
+
+            // display left mouse button state
+            ImGui::Text("Left Mouse Button: %s", io.MouseDown[0] ? "Down" : "Up");
 
             ImGui::SliderFloat("float", &f, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
             ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
@@ -248,6 +252,7 @@ int main_imgui() {
                 counter++;
             ImGui::SameLine();
             ImGui::Text("counter = %d", counter);
+
         ImGui::End();
 
         glViewport(0, 0, win->r.w, win->r.h);
