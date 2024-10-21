@@ -36,6 +36,7 @@ set(src src/main.cpp)
 
 # append src/Modes.cpp and src/RGFW_ODR to src
 list(APPEND src 
+    src/LabApplicationEngine.cpp
     src/Modes.cpp
     src/RGFW-GL.c
     src/imgui/imgui.cpp

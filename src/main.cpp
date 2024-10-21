@@ -180,6 +180,7 @@ void* loop2(void* args) {
 
 /* I'm using opengl 2 here because it requires less setup and I'm lazy */
 #include "backends/imgui_impl_opengl2.h"
+#include "LabApplicationEngine.hpp"
 
 
 /* handle these functions across all apis */
@@ -204,13 +205,30 @@ int main_imgui() {
     ImGui_ImplRgfw_InitForOpenGL(win, true);
     ImGui_ImplOpenGL2_Init();
 
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;         // Enable Docking
+    //io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;       // Enable Multi-Viewport / Platform Windows
+
+    // When viewports are enabled we tweak WindowRounding/WindowBg so platform windows can look identical to regular ones.
+    ImGuiStyle& style = ImGui::GetStyle();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable)
+    {
+        style.WindowRounding = 8.0f;
+        style.FrameRounding = 8.0f;
+        style.TabRounding = 8.0f;
+        style.Colors[ImGuiCol_WindowBg].w = 1.0f;
+    }
+
     ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
+
+    lab::ApplicationEngine& app = *lab::ApplicationEngine::app();
 
     while (RGFW_window_shouldClose(win) == RGFW_FALSE) {
         RGFW_window_checkEvents(win, RGFW_NO_WAIT);
         io.DisplaySize = ImVec2(win->r.w, win->r.h);
 
         imgui_newFrame();
+
+        app.RunUI(false, false);
 
         static float f = 0.0f;
         static int counter = 0;
