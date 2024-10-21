@@ -1,13 +1,11 @@
-#define RGFWDEF
-#define RGFW_ALLOC_DROPFILES
-#define RGFW_PRINT_ERRORS
-#define RGFW_OPENGL
-#define RGFW_IMPLEMENTATION
+#include "RGFW-GL.h"
 
-#include "RGFW.h"
+#define RGFW_IMGUI_IMPLEMENTATION
+#include "imgui_impl_rgfw.h"
+
 #include <stdio.h>
 
-void drawLoop(RGFW_window* w); /* I seperate the draw loop only because it's run twice */
+void drawLoop(RGFW_window* w); /* I separate the draw loop only because it's run twice */
 
 #ifdef RGFW_WINDOWS
 DWORD loop2(void* args);
@@ -27,7 +25,7 @@ void refreshCallback(RGFW_window* win) {
 
 RGFW_window* win2;
 
-int main(void) {
+int main_basic(void) {
 	RGFW_setClassName("RGFW Basic");
     RGFW_window* win = RGFW_createWindow("RGFW Example Window", RGFW_RECT(500, 500, 500, 500), RGFW_ALLOW_DND | RGFW_CENTER);
     RGFW_window_makeCurrent(win);
@@ -103,6 +101,7 @@ int main(void) {
 
     running2 = 0;
     RGFW_window_close(win);
+    return EXIT_SUCCESS;
 }
 
 void drawLoop(RGFW_window *w) {
@@ -176,3 +175,6 @@ void* loop2(void* args) {
     #endif
 }
 
+int main(void) {
+    return main_basic();
+}

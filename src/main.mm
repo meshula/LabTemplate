@@ -28,16 +28,7 @@
 //
 //========================================================================
 
-/* RGFW will have to be linked/compiled outside of this file
-	because this file uses objective-c and RGFW uses work arounds
-*/ 
-//#define RGFW_IMPLEMENTATION
-#define RGFW_EXPORT
-#define RGFW_ALLOC_DROPFILES
-#define RGFW_PRINT_ERRORS
-#define RGFWDEF
-#define RGFW_NO_API
-#import "RGFW.h"
+#import "RGFW-Metal.h"
 
 #import <Metal/Metal.h>
 #import <QuartzCore/QuartzCore.h>

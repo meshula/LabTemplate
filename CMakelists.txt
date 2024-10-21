@@ -14,7 +14,7 @@ if(APPLE)
     # append src/Modes.cpp and src/RGFW_ODR to src
     list(APPEND src 
         src/Modes.cpp 
-        src/RGFW_ODR.c)
+        src/RGFW-Metal.c)
 
     # Add the executable, using src.
     add_executable(LabMetal ${src})
@@ -32,11 +32,18 @@ if(APPLE)
     install(TARGETS LabMetal DESTINATION bin)
 endif()
 
-set(src src/main.c)
+set(src src/main.cpp)
 
 # append src/Modes.cpp and src/RGFW_ODR to src
 list(APPEND src 
-    src/Modes.cpp)
+    src/Modes.cpp
+    src/RGFW-GL.c
+    src/imgui/imgui.cpp
+    src/imgui/imgui_draw.cpp
+    src/imgui/imgui_widgets.cpp
+    src/imgui/imgui_demo.cpp
+    src/imgui/imgui_tables.cpp
+)
 
 # Add the executable, using src.
 add_executable(LabGL ${src})
@@ -45,8 +52,8 @@ add_executable(LabGL ${src})
 target_compile_definitions(LabGL PRIVATE 
     HAVE_NO_USD)
 
-# add src as an include directory
-target_include_directories(LabGL PUBLIC src)
+# add src and src/imgui as include directories
+target_include_directories(LabGL PUBLIC src src/imgui)
 
 if(APPLE)
     # Metal
